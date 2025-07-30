@@ -36,9 +36,9 @@ from Conllu_UD_Parser import Conllu_UD_Parser
 file_mapping = {
     "{name of language}": [
         "{path to UD language train data}",
-        "{path to UD langauge dev data}"
+        "{path to UD language dev data}"
     ],
-    # add subsequent langauges, if necessaary
+    # add subsequent languages, if necessaary
     }
 parser = Conllu_UD_Parser(file_mapping=file_mapping)
 output_paths = parser.process()
