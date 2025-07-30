@@ -40,17 +40,17 @@ class Conllu_UD_Parser:
             text = token_data.metadata['text']
             emoji_pattern = re.compile(
                 "["
-                u"\U0001F600-\U0001F64F"  # Emoticons
-                u"\U0001F300-\U0001F5FF"  # Symbols & pictographs
-                u"\U0001F680-\U0001F6FF"  # Transport & map symbols
-                u"\U0001F1E0-\U0001F1FF"  # Flags
-                u"\U00002500-\U00002BEF"  # Chinese characters
-                u"\U00002700-\U000027BF"  # Dingbats
-                u"\U000024C2-\U0001F251"  # Enclosed characters
-                u"\U0001F900-\U0001F9FF"  # Supplemental symbols
-                u"\U0001FA70-\U0001FAFF"  # Extended-A pictographs
-                u"\U0001F018-\U0001F270"  # Various emoji symbols
-                u"\U0001F000-\U0001F02F"  # Mahjong & dominoes
+                u"\U0001F600-\U0001F64F"
+                u"\U0001F300-\U0001F5FF" 
+                u"\U0001F680-\U0001F6FF"  
+                u"\U0001F1E0-\U0001F1FF" 
+                u"\U00002500-\U00002BEF"
+                u"\U00002700-\U000027BF"  
+                u"\U000024C2-\U0001F251" 
+                u"\U0001F900-\U0001F9FF"  
+                u"\U0001FA70-\U0001FAFF"  
+                u"\U0001F018-\U0001F270"  
+                u"\U0001F000-\U0001F02F"  
                 "]+", flags=re.UNICODE
             )
 
@@ -119,7 +119,7 @@ class Conllu_UD_Parser:
         for cls, f in class_freqs:
             current_bin.append(cls)
             current_sum += f
-            # Check if we reached target or slightly exceeded (greedy cut)
+            
             if current_sum >= target_per_bin and len(bins) < k - 1:
                 bins.append((current_bin[0], current_bin[-1]))
                 current_bin = []
@@ -145,7 +145,7 @@ class Conllu_UD_Parser:
             val_size = int(total* val)  
 
             remaining = total - (train_size + test_size + val_size)
-            train_size += remaining  # Add any remaining samples to train
+            train_size += remaining  
             
             indices = np.arange(total)
             np.random.shuffle(indices)
@@ -180,7 +180,7 @@ class Conllu_UD_Parser:
         Function that removes any skewness in the labels. 
         A label must be at least 10% of the entire corpus. 
         Lastly, it takes the label with least amount of data and 
-        normalizes the data in rest of the labels to that amount.
+        normalizes the data with repect to rest of the labels.
         """
         min_count = len(data)*0.1
         classes=Counter([i.split('\t')[0] for i in data])
@@ -295,7 +295,6 @@ class Conllu_UD_Parser:
         """
         Function for the word content task.
         """
-        # token_lists = read_conllu_file(file_path, parsing="PARSE")
 
         tokens=[]
         for token_list in token_lists:
@@ -584,17 +583,17 @@ class Conllu_UD_Parser:
 
         altered_sents = []
         not_altered = []
-        target_altered_count = len(token_lists) // 2  # 50% of total
-        altered_count = 0  # How many we have altered so far
+        target_altered_count = len(token_lists) // 2  
+        altered_count = 0 
 
         for token_list in tqdm(token_lists):
             if altered_count >= target_altered_count:
-                # Already reached 50% altered, so just add the original sentence
+               
                 original_sentence = " ".join([t['form'] for t in token_list])
                 not_altered.append(f"O\t{original_sentence}")
                 continue
 
-            altered = False  # Flag to check if we alter this sentence
+            altered = False  
 
             for idx in range(1, len(token_list)-1):
                 token = token_list[idx]
@@ -835,25 +834,3 @@ class Conllu_UD_Parser:
                 
         return data_paths
     
-
-file_mapping = {
-    "Belarusian": [r'Languages/UD_Belarusian-HSE/be_hse-ud-train.conllu', r'Languages/UD_Belarusian-HSE/be_hse-ud-dev.conllu'],
-    "Catalan": [r'Languages/UD_Catalan-AnCora/ca_ancora-ud-train.conllu', r'Languages/UD_Catalan-AnCora/ca_ancora-ud-dev.conllu'],
-    "Czech": [r'Languages/UD_Czech-CAC/cs_cac-ud-train.conllu', r'Languages/UD_Czech-CAC/cs_cac-ud-dev.conllu'],
-    "Dutch": [r'Languages/UD_Dutch-LassySmall/nl_lassysmall-ud-train.conllu', r'Languages/UD_Dutch-LassySmall/nl_lassysmall-ud-dev.conllu'],
-    "English": [r'Languages/UD_English-EWT/en_ewt-ud-train.conllu', r'Languages/UD_English-EWT/en_ewt-ud-dev.conllu'],
-    "Estonian": [r'Languages/UD_Estonian-EDT/et_edt-ud-train.conllu', r'Languages/UD_Estonian-EDT/et_edt-ud-dev.conllu'],
-    "Finnish":[r'Languages/UD_Finnish-TDT/fi_tdt-ud-train.conllu', r'Languages/UD_Finnish-TDT/fi_tdt-ud-dev.conllu'],
-    "French": [r'Languages/UD_French-GSD/fr_gsd-ud-train.conllu', r'Languages/UD_French-GSD/fr_gsd-ud-dev.conllu'],
-    "Georgian": [r'Languages/UD_Georgian-GLC/ka_glc-ud-train.conllu', r'Languages/UD_Georgian-GLC/ka_glc-ud-dev.conllu'],
-    "Hebrew": [r'Languages/UD_Hebrew-IAHLTwiki/he_iahltwiki-ud-train.conllu', r'Languages/UD_Hebrew-IAHLTwiki/he_iahltwiki-ud-dev.conllu'],
-    "Hindi": [r'Languages/UD_Hindi-HDTB/hi_hdtb-ud-train.conllu', r'Languages/UD_Hindi-HDTB/hi_hdtb-ud-dev.conllu'],
-    "Latvian": [r'Languages/UD_Latvian-LVTB/lv_lvtb-ud-train.conllu', r'Languages/UD_Latvian-LVTB/lv_lvtb-ud-dev.conllu'],
-    "Persian": [r'Languages/UD_Persian-PerDT/fa_perdt-ud-train.conllu', r'Languages/UD_Persian-PerDT/fa_perdt-ud-dev.conllu'],
-    "Swedish": [r'Languages/UD_Swedish-Talbanken/sv_talbanken-ud-train.conllu', r'Languages/UD_Swedish-Talbanken/sv_talbanken-ud-dev.conllu'],
-    "Turkish":[r'Languages/UD_Turkish-Penn/tr_penn-ud-train.conllu', r'Languages/UD_Turkish-Penn/tr_penn-ud-dev.conllu'],
-    "Urdu": [r'Languages/UD_Urdu-UDTB/ur_udtb-ud-train.conllu', r'Languages/UD_Urdu-UDTB/ur_udtb-ud-dev.conllu']
- }
-
-parser = Conllu_UD_Parser(file_mapping=file_mapping)
-path_dict = parser.process()
